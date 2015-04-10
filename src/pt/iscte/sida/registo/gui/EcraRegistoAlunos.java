@@ -1,5 +1,10 @@
 package pt.iscte.sida.registo.gui;
 
+
+import pt.iscte.sida.registo.controllers.CtlRegistoAlunos;
+import pt.iscte.sida.registo.dObjects.Curso;
+import pt.iscte.sida.registo.database.ServicoEmail;
+
 import javax.swing.*;
 
 /**
@@ -16,41 +21,74 @@ public class EcraRegistoAlunos {
     private JCheckBox masculinoCheckBox;
     private JCheckBox femininoCheckBox;
 
+    private JFrame frame;
+
+    //Controlador
+    private CtlRegistoAlunos ctlRegisto;
+    private boolean verifiedEmail;
+
+    //Atributos
+    private String nome;
+    private Curso curso;
+    private String email;
+    private int idade;
+    private String sexo;
+
     public EcraRegistoAlunos(){
-        JFrame frame = new JFrame("EcraRegistoAlunos");
+        frame = new JFrame("EcraRegistoAlunos");
         frame.setContentPane(panel1);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        //isto e merda
+        ctlRegisto = new CtlRegistoAlunos(); //Instanciação do controlador de Registo de Alunos
     }
 
     public void cancelarRegisto(){
+        ctlRegisto.cancelarRegisto();
+        frame.setVisible(false);
 
     }
     public void setCurso(String curso){
-
+        if(!curso.equals("Nenhum")){
+            ctlRegisto.setCurso(curso);
+        }
     }
     public void setEmail(String email){
 
+        ctlRegisto.verificaEmailIscte(email, nome);
+        if(!verifiedEmail){ // Nao existe atributo verifiedEmail para saber o se esta a true ou a false
+            displayMessage("Email não pertence ao iscte");
+        }else{
+            ctlRegisto.setEmail(email);
+        }
     }
     public void setIdade(int idade){
+        if(idade > 0){
+            ctlRegisto.setIdade(idade);
+
+        }
 
     }
     public void setNome(String nome){
-
+        if(nome!= null){
+            ctlRegisto.setNome(nome);
+        }
     }
     public void setSexo(){
 
+        ctlRegisto.setSexo(sexo);
     }
     public void setVerifyEmail(boolean b){
+        this.verifiedEmail = b;
 
     }
     public void submeterRegisto(){
+        ctlRegisto.submeterRegisto(nome, email, curso, idade, sexo);
+
 
     }
     public void displayMessage(String message){
-
+        JOptionPane.showMessageDialog(null, message);
     }
 
 

@@ -1,5 +1,7 @@
 package pt.iscte.sida.registo.database;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 
 /**
@@ -11,6 +13,12 @@ public class DBConnection {
     private String hostname;
     private int port;
     private String protocol = "jdbc";
+
+
+
+
+    //Constutor variante
+    //public DBConnection(String db, String user, String pw, )
 
     public DBConnection(String dbName, String hostname, int port, String protocol){
         this.dbName = dbName;
@@ -26,9 +34,9 @@ public class DBConnection {
         return 0;
     }
 
-    //TODO descriçao diz que metodo init devolve boolean
-    public void init(){
-
+    //TODO diagrama diz que metodo init é void
+    public boolean init(){
+        return true;
     }
 
     public int insert(String query){
