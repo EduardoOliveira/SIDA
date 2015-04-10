@@ -13,6 +13,5 @@ public class Main {
         EcraRegistoAlunos era = new EcraRegistoAlunos();
         era.displayMessage("OI");
 
-
     }
 }
