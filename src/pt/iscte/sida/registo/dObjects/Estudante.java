@@ -21,7 +21,7 @@ public class Estudante {
         this.curso = curso;
     }
 
-    public void setEmailAluno(String emailAluno) {
+    public void setEmail(String emailAluno) {
         this.emailAluno = emailAluno;
     }
 

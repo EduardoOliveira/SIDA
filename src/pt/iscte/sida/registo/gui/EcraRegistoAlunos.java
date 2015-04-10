@@ -41,6 +41,7 @@ public class EcraRegistoAlunos {
         frame.pack();
         frame.setVisible(true);
         ctlRegisto = new CtlRegistoAlunos(); //Instanciação do controlador de Registo de Alunos
+        ctlRegisto.getCursos();
     }
 
     public void cancelarRegisto(){
@@ -56,7 +57,7 @@ public class EcraRegistoAlunos {
     public void setEmail(String email){
 
         ctlRegisto.verificaEmailIscte(email, nome);
-        if(!verifiedEmail){ // Nao existe atributo verifiedEmail para saber o se esta a true ou a false
+        if(!verifiedEmail){
             displayMessage("Email não pertence ao iscte");
         }else{
             ctlRegisto.setEmail(email);
@@ -74,6 +75,8 @@ public class EcraRegistoAlunos {
             ctlRegisto.setNome(nome);
         }
     }
+
+    //Na especificaçao este metodo nao recebe nada
     public void setSexo(){
 
         ctlRegisto.setSexo(sexo);

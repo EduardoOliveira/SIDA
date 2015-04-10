@@ -4,8 +4,12 @@ import pt.iscte.sida.registo.dObjects.Curso;
 import pt.iscte.sida.registo.dObjects.Estudante;
 import pt.iscte.sida.registo.database.DBConnection;
 import pt.iscte.sida.registo.database.DBIscte_iul;
+import pt.iscte.sida.registo.database.ServicoEmail;
 import pt.iscte.sida.registo.gui.EcraRegistoAlunos;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -15,7 +19,7 @@ import java.sql.SQLException;
 public class CtlRegistoAlunos {
 
     //Database
-    private DBConnection db;
+    private DBConnection dbConnection;
 
     private Estudante estudante;
 
@@ -28,23 +32,32 @@ public class CtlRegistoAlunos {
     }
 
     public void cancelarRegisto(){
-
+        System.exit(0);
 
     }
     public Curso[] getCursos(){
-        return null;
+        Curso curso = new Curso(); //?
+
+
+        Curso[] c = curso.selectAllCurso();
+        Estudante estudante = new Estudante();
+        return c;
     }
 
     public void setCurso(String curso){
         estudante.setCurso(curso);
     }
     public void setEmail(String email){
-        // ResultSet rs = dbConnection.select("Select email from Estudante where Estudante.Email = email");
-        // if(!rs.next()){
-        //     setEmail(email);
-        // }else{
-        //     gui.displayMessage("Email já está registado");
-        // }
+        ResultSet rs = dbConnection.select("Select email from Estudante where Estudante.Email = " + email);
+        try {
+            if(!rs.next()){
+                estudante.setEmail(email);
+             }else{
+                 gui.displayMessage("Email já está registado");
+             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     public void setIdade(int idade){
 
@@ -59,11 +72,42 @@ public class CtlRegistoAlunos {
         estudante.setSexo(sexo);
 
     }
+    public String pass(){
+        byte[] result = new byte[0];
+        try {
+            SecureRandom prng = SecureRandom.getInstance("SHA1PRNG");
+
+            //generate a random number
+            String randomNum = new Integer(prng.nextInt()).toString();
+
+            //get its digest
+            MessageDigest sha = MessageDigest.getInstance("SHA-1");
+            result =  sha.digest(randomNum.getBytes());
+        }
+        catch (NoSuchAlgorithmException ex) {
+            System.err.println(ex);
+        }
+        return hexEncode(result);
+    }
+
+    static private String hexEncode(byte[] aInput){
+        StringBuilder result = new StringBuilder();
+        char[] digits = {'0', '1', '2', '3', '4','5','6','7','8','9','a','b','c','d','e','f'};
+        for (int idx = 0; idx < aInput.length; ++idx) {
+            byte b = aInput[idx];
+            result.append(digits[ (b&0xf0) >> 4 ]);
+            result.append(digits[ b&0x0f]);
+        }
+        return result.toString();
+    }
+
+
     public void submeterRegisto(String nome, String email, Curso curso, int idade, String sexo){
-        //dbConnection.insert("Insert Estudante into Estudante(" + nome +"," +
-        //         email + "," + senha + "," + curso + "," + idade + "," + sexo);
-        // ServicoEmail sEmail = new ServicoEmail();
-        // sEmail.sendMessage("IUL Quiz@noreply.com", email, "Registo Aluno", "A sua senha é: " + senha);
+        String senha = pass();
+        dbConnection.insert("Insert " + estudante + " into Estudante(" + nome +"," +
+               email + "," + senha + "," + curso + "," + idade + "," + sexo);
+        ServicoEmail sEmail = new ServicoEmail();
+        sEmail.sendMessage("IUL Quiz@noreply.com", email, "Registo Aluno", "A sua senha é: " + senha);
 
     }
     public void verificaEmailIscte(String email, String nome){

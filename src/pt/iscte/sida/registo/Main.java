@@ -1,5 +1,6 @@
 package pt.iscte.sida.registo;
 
+import pt.iscte.sida.registo.controllers.CtlRegistoAlunos;
 import pt.iscte.sida.registo.gui.EcraRegistoAlunos;
 
 import javax.swing.*;
@@ -10,8 +11,11 @@ import javax.swing.*;
 public class Main {
 
     public static void main(String[] args) {
-        EcraRegistoAlunos era = new EcraRegistoAlunos();
-        era.displayMessage("OI");
+        //EcraRegistoAlunos era = new EcraRegistoAlunos();
+        //era.displayMessage("OI");
 
+
+        CtlRegistoAlunos c = new CtlRegistoAlunos();
+        c.submeterRegisto();
     }
 }
