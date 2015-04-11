@@ -13,6 +13,8 @@ public class Curso {
     private String designacaoCurso;
     private String siglaCurso;
 
+
+
     //PARA APAGAR
     public Curso(){
 
@@ -27,15 +29,25 @@ public class Curso {
     //TODO nome método nao standard
     public Curso[] ListFrom(ResultSet rs) throws SQLException {
 
-        String desig = "";
-        String sigla = "";
-        while (rs.next()){
-            desig = rs.getString("designacaoCurso");
-            sigla = rs.getString("siglaCurso");
-            new Curso(desig, sigla);
+        Curso[] cursos;
+
+        int size= 0;
+        if (rs != null)
+        {
+            rs.last();
+            size = rs.getRow();
+            rs.beforeFirst();
         }
 
-        return null;
+        cursos = new Curso[size];
+
+        int i = 0;
+        while (rs.next()){
+            cursos[i] =  new Curso(rs.getString("designacao"), rs.getString("sigla"));
+            i++;
+        }
+
+        return cursos;
     }
 
     public Curso[] selectAllCurso(){
@@ -47,7 +59,7 @@ public class Curso {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    */
+        */
         return null;
     }
 
