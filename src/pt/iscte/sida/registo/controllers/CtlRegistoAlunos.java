@@ -28,7 +28,7 @@ public class CtlRegistoAlunos {
 
     public CtlRegistoAlunos(EcraRegistoAlunos gui) {
         this.gui = gui;
-        dbConnection = new DBConnection("sida","localhost",2638,"jdbc:sqlanywhere:Tds:");
+        dbConnection = new DBConnection("sida", "localhost", 2638, "jdbc:sqlanywhere:Tds:");
         // a parametros de base de dados
     }
 
@@ -50,7 +50,7 @@ public class CtlRegistoAlunos {
     }
 
     public void setEmail(String email) {
-        ResultSet rs = dbConnection.select("Select email from Estudante where Estudante.Email = " + email);
+        ResultSet rs = dbConnection.select("Select Email_Aluno from Estudante where Estudante.Email_Aluno = '" + email + "'");
         try {
             if (!rs.next()) {
                 estudante.setEmail(email);
@@ -105,18 +105,21 @@ public class CtlRegistoAlunos {
 
     public void submeterRegisto(String nome, String email, Curso curso, int idade, String sexo) {
         String senha = pass();
-        dbConnection.insert("Insert " + estudante + " into Estudante(" + nome + "," +
-                email + "," + senha + "," + curso + "," + idade + "," + sexo);
-        ServicoEmail sEmail = new ServicoEmail();
-        sEmail.sendMessage("IUL_Quiz@noreply.com", email, "Registo Aluno", "A sua senha é: " + senha);
+        int rtn =dbConnection.insert("INSERT INTO Estudante (Nome,Email_Aluno,Senha,Curso,Idade,Sexo) VALUES ('" + nome + "','" +
+                email + "','" + senha + "','" + curso.getSiglaCurso() + "'," + idade + ",'" + sexo + "')");
+        if (rtn != -1) {
+
+            ServicoEmail sEmail = new ServicoEmail();
+            sEmail.sendMessage("IUL_Quiz@noreply.com", email, "Registo Aluno", "A sua senha é: " + senha);
+            gui.displayMessage("Email enviado com Sucesso!");
+        }
 
     }
 
     //Este metodo deveria receber o ecra
     public void verificaEmailIscte(String email, String nome) {
         DBIscte_iul dbIscte = new DBIscte_iul();
-        ResultSet rs = dbIscte.select("select Nome, Email from Utilizador where Utilizador.Nome =" +
-                nome + " and Utilizador.Email = " + email);
+        ResultSet rs = dbIscte.select("SELECT nome, email from Utilizador where Utilizador.nome = '" + nome + "' and Utilizador.email = '" + email + "'");
         try {
             if (!rs.next()) {
                 gui.setVerifyEmail(false);

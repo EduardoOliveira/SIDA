@@ -39,10 +39,8 @@ public class DBConnection {
 
     // diagrama diz que metodo init é void
     public boolean init(){
-        String dbUrl = protocol + hostname + ":" + port + "?eng=" + dbName;
-        System.out.println(dbUrl);
         try {
-            conn = DriverManager.getConnection(dbUrl, USER, PW);
+            conn = DriverManager.getConnection("jdbc:sqlanywhere:uid="+USER+";pwd="+PW+";eng=sida");
         } catch (Exception e) {
             System.out.println("Server down, unable to make the connection. ");
             return false;
@@ -55,6 +53,7 @@ public class DBConnection {
         try {
             result = conn.createStatement().executeUpdate(query);
         } catch (Exception e){
+            e.printStackTrace();
             return result;
         }
         return result;

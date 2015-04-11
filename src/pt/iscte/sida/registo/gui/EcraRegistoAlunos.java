@@ -5,6 +5,7 @@ import pt.iscte.sida.registo.controllers.CtlRegistoAlunos;
 import pt.iscte.sida.registo.dObjects.Curso;
 
 import javax.swing.*;
+import java.util.regex.Pattern;
 
 public class EcraRegistoAlunos {
     private JPanel panel1;
@@ -43,15 +44,40 @@ public class EcraRegistoAlunos {
 
 
         registarAlunoButton.addActionListener(e -> {
-            if(masculinoRadioButton.isSelected()){
-                setSexo(masculinoRadioButton.getText());
+            if(!masculinoRadioButton.isSelected()&&!femininoRadioButton.isSelected()){
+                displayMessage("Selecione um sexo!!");
+                return;
+            }else{
+                if(masculinoRadioButton.isSelected()){
+                    setSexo(masculinoRadioButton.getText());
+                }
+                if(femininoRadioButton.isSelected()){
+                    setSexo(femininoRadioButton.getText());
+                }
             }
-            if(femininoRadioButton.isSelected()){
-                setSexo(femininoRadioButton.getText());
+
+            if(textField1.getText().length()<=0 || textField1.getText().length()>200 ||
+                    !(Pattern.matches("^[\\p{L} .'-]+$", textField1.getText()))){
+                displayMessage("Nome Invalido");
+                return;
             }
-            setNome(textField1.getText());
-            setEmail(textField2.getText());
-            setIdade(Integer.valueOf(textField4.getText()));
+            if(textField2.getText().length()<=0 || textField2.getText().length()>500 ||
+                    !(Pattern.matches("^([\\w-]+(?:\\.[\\w-]+)*)@((?:[\\w-]+\\.)*\\w[\\w-]{0,66})\\.([a-z]{2,6}(?:\\.[a-z]{2})?)$", textField2.getText()))){
+                displayMessage("Email Invalido");
+                return;
+            }
+            try{
+                int idade = Integer.valueOf(textField4.getText());
+                if(idade<0 || idade>120){
+                    displayMessage("Idade Invalida!!");
+                    return;
+                }
+                setIdade(idade);
+
+            }catch(NumberFormatException ex){
+                displayMessage("Idade Invalida!!");
+                return;
+            }
 
             submeterRegisto();
         });
@@ -100,10 +126,18 @@ public class EcraRegistoAlunos {
 
     }
     public void submeterRegisto(){
-        ctlRegisto.submeterRegisto(textField1.getText(), textField2.getText(),
-                (Curso)comboBox1.getSelectedItem(), Integer.parseInt(textField4.getText()),
-                (femininoRadioButton.isSelected()?"feminino":((masculinoRadioButton.isSelected())?"masculino":"")));
+        int idade=0;
+        try{
+            idade = Integer.parseInt(textField4.getText());
 
+        }catch(NumberFormatException e){
+            displayMessage("Idade Invalida!!");
+            return;
+        }
+
+        ctlRegisto.submeterRegisto(textField1.getText(), textField2.getText(),
+                (Curso)comboBox1.getSelectedItem(), idade,
+                (femininoRadioButton.isSelected()?"feminino":((masculinoRadioButton.isSelected())?"masculino":"")));
 
     }
     public void displayMessage(String message){

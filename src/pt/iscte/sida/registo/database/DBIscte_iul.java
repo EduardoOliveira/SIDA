@@ -7,14 +7,11 @@ import java.sql.ResultSet;
 public class DBIscte_iul {
 
 
-    private static final String dbUrl = "jdbc:sqlanywhere:Tds:localhost:2638?eng=iscte";
-    private static final String USER = "iscte";
-    private static final String PW = "iscte123";
     private Connection conn;
 
     public DBIscte_iul(){
         try {
-            conn = DriverManager.getConnection(dbUrl, USER, PW);
+            conn = DriverManager.getConnection("jdbc:sqlanywhere:uid=iscte;pwd=iscte123;eng=iscte");
         } catch (Exception e) {
             System.out.println("Server down, unable to make the connection. ");
         }
