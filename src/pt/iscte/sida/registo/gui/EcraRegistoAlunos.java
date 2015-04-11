@@ -3,11 +3,8 @@ package pt.iscte.sida.registo.gui;
 
 import pt.iscte.sida.registo.controllers.CtlRegistoAlunos;
 import pt.iscte.sida.registo.dObjects.Curso;
-import pt.iscte.sida.registo.database.ServicoEmail;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class EcraRegistoAlunos {
     private JPanel panel1;
@@ -25,13 +22,6 @@ public class EcraRegistoAlunos {
     //Controlador
     private CtlRegistoAlunos ctlRegisto;
     private boolean verifiedEmail;
-
-    //Atributos
-    private String nome;
-    private Curso curso;
-    private String email;
-    private int idade;
-    private String sexo;
 
    private ButtonGroup buttonsGroup = new ButtonGroup();
 
@@ -82,31 +72,27 @@ public class EcraRegistoAlunos {
     }
     public void setEmail(String email){
 
-        ctlRegisto.verificaEmailIscte(email, nome);
+        ctlRegisto.verificaEmailIscte(email, textField1.getText());
         if(!verifiedEmail){
             displayMessage("Email não pertence ao iscte");
         }else{
             ctlRegisto.setEmail(email);
-            this.email = email;
         }
     }
     public void setIdade(int idade){
         if(idade > 0){
             ctlRegisto.setIdade(idade);
-            this.idade =idade;
         }
 
     }
     public void setNome(String nome){
         if(nome!= null){
             ctlRegisto.setNome(nome);
-            this.nome =nome;
         }
     }
 
     //Na especificaçao este metodo nao recebe nada
     public void setSexo(String sexo){
-        this.sexo = sexo;
         ctlRegisto.setSexo(sexo);
     }
     public void setVerifyEmail(boolean b){
@@ -114,7 +100,9 @@ public class EcraRegistoAlunos {
 
     }
     public void submeterRegisto(){
-        ctlRegisto.submeterRegisto(nome, email, curso, idade, sexo);
+        ctlRegisto.submeterRegisto(textField1.getText(), textField2.getText(),
+                (Curso)comboBox1.getSelectedItem(), Integer.parseInt(textField4.getText()),
+                (femininoRadioButton.isSelected()?"feminino":((masculinoRadioButton.isSelected())?"masculino":"")));
 
 
     }

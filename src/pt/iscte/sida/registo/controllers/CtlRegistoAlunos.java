@@ -28,7 +28,7 @@ public class CtlRegistoAlunos {
 
     public CtlRegistoAlunos(EcraRegistoAlunos gui) {
         this.gui = gui;
-        //dbConnection = new DBConnection(); //Controlador nao tem acesso
+        dbConnection = new DBConnection("sida","localhost",2638,"jdbc:sqlanywhere:Tds:");
         // a parametros de base de dados
     }
 

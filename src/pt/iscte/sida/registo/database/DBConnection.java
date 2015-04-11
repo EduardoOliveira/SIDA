@@ -40,9 +40,9 @@ public class DBConnection {
     // diagrama diz que metodo init é void
     public boolean init(){
         String dbUrl = protocol + hostname + ":" + port + "?eng=" + dbName;
+        System.out.println(dbUrl);
         try {
             conn = DriverManager.getConnection(dbUrl, USER, PW);
-            conn.setAutoCommit(false);
         } catch (Exception e) {
             System.out.println("Server down, unable to make the connection. ");
             return false;

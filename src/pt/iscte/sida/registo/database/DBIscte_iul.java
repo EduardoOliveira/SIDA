@@ -15,7 +15,6 @@ public class DBIscte_iul {
     public DBIscte_iul(){
         try {
             conn = DriverManager.getConnection(dbUrl, USER, PW);
-            conn.setAutoCommit(false);
         } catch (Exception e) {
             System.out.println("Server down, unable to make the connection. ");
         }
