@@ -4,6 +4,8 @@ import pt.iscte.sida.registo.database.DBConnection;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Admin on 11-03-2015.
@@ -29,39 +31,45 @@ public class Curso {
     //TODO nome método nao standard
     public Curso[] ListFrom(ResultSet rs) throws SQLException {
 
-        Curso[] cursos;
-
-        int size= 0;
-        if (rs != null)
-        {
-            rs.last();
-            size = rs.getRow();
-            rs.beforeFirst();
-        }
-
-        cursos = new Curso[size];
-
-        int i = 0;
+        List<Curso> cursos = new ArrayList<>();
         while (rs.next()){
-            cursos[i] =  new Curso(rs.getString("designacao"), rs.getString("sigla"));
-            i++;
+            cursos.add(new Curso(rs.getString("Designaca_Curso"), rs.getString("Sigla_Curso")));
         }
-
-        return cursos;
+        Curso[]rtn = new Curso[cursos.size()];
+        cursos.toArray(rtn);
+        return rtn;
     }
 
     public Curso[] selectAllCurso(){
         //Tera de ser criada uma nova DB?
-        /*
-        DBConnection db = new DBConnection();
+
+        DBConnection db = new DBConnection("sida","localhost",2638,"jdbc:sqlanywhere:Tds:");
         try {
-            ListFrom(db.select("Select designacaoCurso From Curso"));
+            return ListFrom(db.select("Select * From Curso"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        */
         return null;
     }
 
+    public String getDesignacaoCurso() {
+        return designacaoCurso;
+    }
 
+    public void setDesignacaoCurso(String designacaoCurso) {
+        this.designacaoCurso = designacaoCurso;
+    }
+
+    public String getSiglaCurso() {
+        return siglaCurso;
+    }
+
+    public void setSiglaCurso(String siglaCurso) {
+        this.siglaCurso = siglaCurso;
+    }
+
+    @Override
+    public String toString() {
+        return designacaoCurso;
+    }
 }

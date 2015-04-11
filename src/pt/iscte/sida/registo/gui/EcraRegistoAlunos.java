@@ -9,9 +9,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * Created by Admin on 11-03-2015.
- */
 public class EcraRegistoAlunos {
     private JPanel panel1;
     private JButton registarAlunoButton;
@@ -45,11 +42,14 @@ public class EcraRegistoAlunos {
         frame.pack();
         frame.setVisible(true);
         ctlRegisto = new CtlRegistoAlunos(); //Instanciação do controlador de Registo de Alunos
-        ctlRegisto.getCursos();
+        Curso[] cursos = ctlRegisto.getCursos();
+
         buttonsGroup.add(masculinoRadioButton);
         buttonsGroup.add(femininoRadioButton);
 
+        comboBox1.setModel(new DefaultComboBoxModel<>(cursos));
         //Adicionar curso a combo box
+
 
 
         registarAlunoButton.addActionListener(new ActionListener() {

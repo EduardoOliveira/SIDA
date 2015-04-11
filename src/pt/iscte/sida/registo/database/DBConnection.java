@@ -4,49 +4,78 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 
-/**
- * Created by Admin on 11-03-2015.
- */
 public class DBConnection {
 
     private String dbName;
     private String hostname;
     private int port;
-    private String protocol = "jdbc";
+    private String protocol;
+    private Connection conn;
 
+    private static final String USER = "sida";
+    private static final String PW = "sida123";
 
-
-
-    //Constutor variante
-    //public DBConnection(String db, String user, String pw, )
-
-    public DBConnection(String dbName, String hostname, int port, String protocol){
+    public DBConnection(String dbName, String hostname, int port, String protocol) {
         this.dbName = dbName;
         this.hostname = hostname;
         this.port = port;
         this.protocol = protocol;
+        init();
     }
 
     public void connect(String dbName, String hostname, int port, String protocol){
-
+        throw new UnsupportedOperationException("Not Implemented");
     }
+
     public int delete(String query){
-        return 0;
+        int result = -1;
+        try {
+            result = conn.createStatement().executeUpdate(query);
+        } catch (Exception e){
+            return result;
+        }
+        return result;
     }
 
     // diagrama diz que metodo init é void
     public boolean init(){
+        String dbUrl = protocol + hostname + ":" + port + "?eng=" + dbName;
+        try {
+            conn = DriverManager.getConnection(dbUrl, USER, PW);
+            conn.setAutoCommit(false);
+        } catch (Exception e) {
+            System.out.println("Server down, unable to make the connection. ");
+            return false;
+        }
         return true;
     }
 
     public int insert(String query){
-        return 0;
+        int result = -1;
+        try {
+            result = conn.createStatement().executeUpdate(query);
+        } catch (Exception e){
+            return result;
+        }
+        return result;
     }
 
     public ResultSet select(String query){
+        try {
+            return conn.createStatement().executeQuery(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
-    public int update(String query){
-        return 0;
+
+    public int update(String query) {
+        int result = -1;
+        try {
+            result = conn.createStatement().executeUpdate(query);
+        } catch (Exception e){
+            return result;
+        }
+        return result;
     }
 }

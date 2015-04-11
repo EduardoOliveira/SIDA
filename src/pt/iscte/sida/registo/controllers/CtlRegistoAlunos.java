@@ -38,6 +38,7 @@ public class CtlRegistoAlunos {
     public Curso[] getCursos(){
         Curso curso = new Curso(); //?
         Curso[] c = curso.selectAllCurso();
+
         Estudante estudante = new Estudante();
         return c;
     }
