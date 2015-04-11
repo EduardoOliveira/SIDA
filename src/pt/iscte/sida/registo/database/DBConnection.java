@@ -34,7 +34,7 @@ public class DBConnection {
         return 0;
     }
 
-    //TODO diagrama diz que metodo init é void
+    // diagrama diz que metodo init é void
     public boolean init(){
         return true;
     }

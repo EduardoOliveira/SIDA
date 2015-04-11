@@ -6,6 +6,8 @@ import pt.iscte.sida.registo.dObjects.Curso;
 import pt.iscte.sida.registo.database.ServicoEmail;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by Admin on 11-03-2015.
@@ -16,10 +18,10 @@ public class EcraRegistoAlunos {
     private JButton cancelarRegistoButton;
     private JTextField textField1;
     private JTextField textField2;
-    private JTextField textField3;
     private JTextField textField4;
-    private JCheckBox masculinoCheckBox;
-    private JCheckBox femininoCheckBox;
+    private JComboBox comboBox1;
+    private JRadioButton masculinoRadioButton;
+    private JRadioButton femininoRadioButton;
 
     private JFrame frame;
 
@@ -34,6 +36,8 @@ public class EcraRegistoAlunos {
     private int idade;
     private String sexo;
 
+   private ButtonGroup buttonsGroup = new ButtonGroup();
+
     public EcraRegistoAlunos(){
         frame = new JFrame("EcraRegistoAlunos");
         frame.setContentPane(panel1);
@@ -42,6 +46,36 @@ public class EcraRegistoAlunos {
         frame.setVisible(true);
         ctlRegisto = new CtlRegistoAlunos(); //Instanciação do controlador de Registo de Alunos
         ctlRegisto.getCursos();
+        buttonsGroup.add(masculinoRadioButton);
+        buttonsGroup.add(femininoRadioButton);
+
+        //Adicionar curso a combo box
+
+
+        registarAlunoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(masculinoRadioButton.isSelected()){
+                    setSexo(masculinoRadioButton.getText());
+                }
+                if(femininoRadioButton.isSelected()){
+                    setSexo(femininoRadioButton.getText());
+                }
+                setNome(textField1.getText());
+                setEmail(textField2.getText());
+                setIdade(Integer.valueOf(textField4.getText()));
+
+                submeterRegisto();
+            }
+        });
+
+        cancelarRegistoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cancelarRegisto();
+            }
+        });
+
     }
 
     public void cancelarRegisto(){
@@ -61,24 +95,26 @@ public class EcraRegistoAlunos {
             displayMessage("Email não pertence ao iscte");
         }else{
             ctlRegisto.setEmail(email);
+            this.email = email;
         }
     }
     public void setIdade(int idade){
         if(idade > 0){
             ctlRegisto.setIdade(idade);
-
+            this.idade =idade;
         }
 
     }
     public void setNome(String nome){
         if(nome!= null){
             ctlRegisto.setNome(nome);
+            this.nome =nome;
         }
     }
 
     //Na especificaçao este metodo nao recebe nada
-    public void setSexo(){
-
+    public void setSexo(String sexo){
+        this.sexo = sexo;
         ctlRegisto.setSexo(sexo);
     }
     public void setVerifyEmail(boolean b){

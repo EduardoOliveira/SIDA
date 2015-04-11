@@ -110,10 +110,12 @@ public class CtlRegistoAlunos {
         sEmail.sendMessage("IUL Quiz@noreply.com", email, "Registo Aluno", "A sua senha é: " + senha);
 
     }
+
+    //Este metodo deveria receber o ecra
     public void verificaEmailIscte(String email, String nome){
         DBIscte_iul dbIscte = new DBIscte_iul();
-        ResultSet rs = dbIscte.select("select Nome, Email from Utilizador.Nome" +
-                " = nome and Utilizador.Email = email");
+        ResultSet rs = dbIscte.select("select Nome, Email from Utilizador where Utilizador.Nome =" +
+                nome + " and Utilizador.Email = " + email);
         EcraRegistoAlunos gui = new EcraRegistoAlunos();
         try {
             if(!rs.next()){

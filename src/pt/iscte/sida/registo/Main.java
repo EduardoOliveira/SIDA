@@ -11,11 +11,8 @@ import javax.swing.*;
 public class Main {
 
     public static void main(String[] args) {
-        //EcraRegistoAlunos era = new EcraRegistoAlunos();
-        //era.displayMessage("OI");
+        EcraRegistoAlunos era = new EcraRegistoAlunos();
 
 
-        CtlRegistoAlunos c = new CtlRegistoAlunos();
-        c.submeterRegisto();
     }
 }
