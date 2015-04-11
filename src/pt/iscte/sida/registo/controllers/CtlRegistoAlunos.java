@@ -37,8 +37,6 @@ public class CtlRegistoAlunos {
     }
     public Curso[] getCursos(){
         Curso curso = new Curso(); //?
-
-
         Curso[] c = curso.selectAllCurso();
         Estudante estudante = new Estudante();
         return c;
@@ -107,7 +105,7 @@ public class CtlRegistoAlunos {
         dbConnection.insert("Insert " + estudante + " into Estudante(" + nome +"," +
                email + "," + senha + "," + curso + "," + idade + "," + sexo);
         ServicoEmail sEmail = new ServicoEmail();
-        sEmail.sendMessage("IUL Quiz@noreply.com", email, "Registo Aluno", "A sua senha é: " + senha);
+        sEmail.sendMessage("IUL_Quiz@noreply.com", email, "Registo Aluno", "A sua senha é: " + senha);
 
     }
 
