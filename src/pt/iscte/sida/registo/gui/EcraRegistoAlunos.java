@@ -41,7 +41,7 @@ public class EcraRegistoAlunos {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-        ctlRegisto = new CtlRegistoAlunos(); //Instanciação do controlador de Registo de Alunos
+        ctlRegisto = new CtlRegistoAlunos(this); //Instanciação do controlador de Registo de Alunos
         Curso[] cursos = ctlRegisto.getCursos();
 
         buttonsGroup.add(masculinoRadioButton);
@@ -52,29 +52,21 @@ public class EcraRegistoAlunos {
 
 
 
-        registarAlunoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(masculinoRadioButton.isSelected()){
-                    setSexo(masculinoRadioButton.getText());
-                }
-                if(femininoRadioButton.isSelected()){
-                    setSexo(femininoRadioButton.getText());
-                }
-                setNome(textField1.getText());
-                setEmail(textField2.getText());
-                setIdade(Integer.valueOf(textField4.getText()));
-
-                submeterRegisto();
+        registarAlunoButton.addActionListener(e -> {
+            if(masculinoRadioButton.isSelected()){
+                setSexo(masculinoRadioButton.getText());
             }
+            if(femininoRadioButton.isSelected()){
+                setSexo(femininoRadioButton.getText());
+            }
+            setNome(textField1.getText());
+            setEmail(textField2.getText());
+            setIdade(Integer.valueOf(textField4.getText()));
+
+            submeterRegisto();
         });
 
-        cancelarRegistoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cancelarRegisto();
-            }
-        });
+        cancelarRegistoButton.addActionListener(e -> cancelarRegisto());
 
     }
 

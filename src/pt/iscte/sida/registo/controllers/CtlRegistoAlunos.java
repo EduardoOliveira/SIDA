@@ -26,52 +26,55 @@ public class CtlRegistoAlunos {
     private EcraRegistoAlunos gui;
 
 
-    public CtlRegistoAlunos(){
+    public CtlRegistoAlunos(EcraRegistoAlunos gui) {
+        this.gui = gui;
         //dbConnection = new DBConnection(); //Controlador nao tem acesso
         // a parametros de base de dados
     }
 
-    public void cancelarRegisto(){
+    public void cancelarRegisto() {
         System.exit(0);
 
     }
-    public Curso[] getCursos(){
+
+    public Curso[] getCursos() {
         Curso curso = new Curso(); //?
         Curso[] c = curso.selectAllCurso();
 
-        Estudante estudante = new Estudante();
+        estudante = new Estudante();
         return c;
     }
 
-    public void setCurso(String curso){
+    public void setCurso(String curso) {
         estudante.setCurso(curso);
     }
-    public void setEmail(String email){
+
+    public void setEmail(String email) {
         ResultSet rs = dbConnection.select("Select email from Estudante where Estudante.Email = " + email);
         try {
-            if(!rs.next()){
+            if (!rs.next()) {
                 estudante.setEmail(email);
-             }else{
-                 gui.displayMessage("Email já está registado");
-             }
+            } else {
+                gui.displayMessage("Email já está registado");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    public void setIdade(int idade){
 
+    public void setIdade(int idade) {
         estudante.setIdade(idade);
     }
-    public void setNome(String nome){
-        Estudante estudante = new Estudante();
+
+    public void setNome(String nome) {
         estudante.setNome(nome);
     }
-    public void setSexo(String sexo){
 
+    public void setSexo(String sexo) {
         estudante.setSexo(sexo);
-
     }
-    public String pass(){
+
+    public String pass() {
         byte[] result = new byte[0];
         try {
             SecureRandom prng = SecureRandom.getInstance("SHA1PRNG");
@@ -81,45 +84,43 @@ public class CtlRegistoAlunos {
 
             //get its digest
             MessageDigest sha = MessageDigest.getInstance("SHA-1");
-            result =  sha.digest(randomNum.getBytes());
-        }
-        catch (NoSuchAlgorithmException ex) {
+            result = sha.digest(randomNum.getBytes());
+        } catch (NoSuchAlgorithmException ex) {
             System.err.println(ex);
         }
         return hexEncode(result);
     }
 
-    static private String hexEncode(byte[] aInput){
+    static private String hexEncode(byte[] aInput) {
         StringBuilder result = new StringBuilder();
-        char[] digits = {'0', '1', '2', '3', '4','5','6','7','8','9','a','b','c','d','e','f'};
+        char[] digits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
         for (int idx = 0; idx < aInput.length; ++idx) {
             byte b = aInput[idx];
-            result.append(digits[ (b&0xf0) >> 4 ]);
-            result.append(digits[ b&0x0f]);
+            result.append(digits[(b & 0xf0) >> 4]);
+            result.append(digits[b & 0x0f]);
         }
         return result.toString();
     }
 
 
-    public void submeterRegisto(String nome, String email, Curso curso, int idade, String sexo){
+    public void submeterRegisto(String nome, String email, Curso curso, int idade, String sexo) {
         String senha = pass();
-        dbConnection.insert("Insert " + estudante + " into Estudante(" + nome +"," +
-               email + "," + senha + "," + curso + "," + idade + "," + sexo);
+        dbConnection.insert("Insert " + estudante + " into Estudante(" + nome + "," +
+                email + "," + senha + "," + curso + "," + idade + "," + sexo);
         ServicoEmail sEmail = new ServicoEmail();
         sEmail.sendMessage("IUL_Quiz@noreply.com", email, "Registo Aluno", "A sua senha é: " + senha);
 
     }
 
     //Este metodo deveria receber o ecra
-    public void verificaEmailIscte(String email, String nome){
+    public void verificaEmailIscte(String email, String nome) {
         DBIscte_iul dbIscte = new DBIscte_iul();
         ResultSet rs = dbIscte.select("select Nome, Email from Utilizador where Utilizador.Nome =" +
                 nome + " and Utilizador.Email = " + email);
-        EcraRegistoAlunos gui = new EcraRegistoAlunos();
         try {
-            if(!rs.next()){
+            if (!rs.next()) {
                 gui.setVerifyEmail(false);
-            }else{
+            } else {
                 gui.setVerifyEmail(true);
             }
         } catch (SQLException e) {
