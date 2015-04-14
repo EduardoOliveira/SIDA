@@ -27,8 +27,8 @@ public class Curso {
         this.siglaCurso = siglaCurso;
     }
 
-    //TODO nao é recordSet mas sim resultSet
-    //TODO nome método nao standard
+    //nao é recordSet mas sim resultSet
+    //nome método nao standard
     public Curso[] ListFrom(ResultSet rs) throws SQLException {
 
         List<Curso> cursos = new ArrayList<>();

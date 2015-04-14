@@ -116,7 +116,7 @@ public class CtlRegistoAlunos {
 
     }
 
-    //Este metodo deveria receber o ecra
+
     public void verificaEmailIscte(String email, String nome) {
         DBIscte_iul dbIscte = new DBIscte_iul();
         ResultSet rs = dbIscte.select("SELECT nome, email from Utilizador where Utilizador.nome = '" + nome + "' and Utilizador.email = '" + email + "'");

@@ -17,8 +17,8 @@ public class ServicoEmail {
 
 
     public void sendMessage(String origem, String destino, String subject, String body){
-        final String username = "dapcn@iscte-iul.pt";
-        final String password = "DCiscte31.";
+        final String username = "iul_quizzing@gmail.com";
+        final String password = "IULsida123";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");

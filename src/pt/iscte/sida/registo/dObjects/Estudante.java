@@ -5,7 +5,7 @@ package pt.iscte.sida.registo.dObjects;
  */
 public class Estudante {
 
-    //TODO tipos de dados "varchar" não existentes em java
+
     private String curso;
     private String emailAluno;
     private int idade;

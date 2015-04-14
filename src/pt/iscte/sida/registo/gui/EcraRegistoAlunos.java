@@ -123,6 +123,9 @@ public class EcraRegistoAlunos {
     }
     public void setVerifyEmail(boolean b){
         this.verifiedEmail = b;
+        if(!b){
+            displayMessage("Email Invalido");
+        }
 
     }
     public void submeterRegisto(){
